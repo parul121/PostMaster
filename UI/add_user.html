@@ -1,0 +1,87 @@
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add User</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    .login-container {
+      margin-top: 100px;
+    }
+    .btn{
+      border-radius:20px ;
+    }
+    .btnc{
+      margin-bottom: 5%;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn btn-secondary btnc" onclick="window.location.href = 'login.html';">Back</button>
+  <div class="container login-container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-sm-8 col-10">
+        <h2>Please, fill details below</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Name:</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Username:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <input type="button" value="Add User" class="btn btn-primary" onclick="addUser()">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    function addUser(){
+              // Get the values from the input fields
+      var username = document.getElementById("name").value;
+      var password = document.getElementById("password").value;
+
+      // Create an object with the user data
+      var user = {
+        name: username,
+        password: password
+      };
+      // Make the API request
+      fetch('http://127.0.0.1:5000/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response
+        if (data.message === 'Data inserted successfully') {
+          alert("user added successfully");
+          window.location.href = "login.html";
+          // Perform any necessary action after successful login
+        } 
+        else {
+          alert('Please retry:'+ data);
+          // Perform any necessary action after failed login
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });}
+  </script>
+</body>
+</html>  
